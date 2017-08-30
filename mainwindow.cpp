@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QString>
 #include <string>
+#include <ctype.h>
+#include <cctype>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,15 +22,15 @@ void MainWindow::on_pushButton_clicked(){
 
     //Do this in one line because append adds an endl by default reee.
     QString all;
+    std::string stdline = line.toStdString();
 
     //Now we loop through the input browser.
     for (size_t i = 0; i < line.size(); ++i){
-        if (line[i] == '\n'){
+        if (stdline[i] == '\n'){
             all += "    ";
             continue;
         }
 
-        std::string stdline = line.toStdString();
         switch(stdline[i]){
         /*case '-':
             all += ":dash:";
@@ -95,13 +97,16 @@ void MainWindow::on_pushButton_clicked(){
         case '*':
             all += ":eight_pointed_black_star:";
             break;
+        case '>':
+            all += ":arrow_forward:";
+            break;
 
 
 
 
         default:
-            if (line[i].isLetter()){
-                all += QString(":regional_indicator_") + line[i].toLower() + ":";
+            if (isalpha(stdline[i])){
+                all += QString(":regional_indicator_") + char(std::tolower(stdline[i])) + ":";
             }
             break;
         }
